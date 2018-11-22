@@ -22,3 +22,20 @@ class Mqtt(models.Model):
 
     def __str__(self):
         return self.msg
+
+
+class Device(models.Model):
+    card_id = models.CharField(
+        max_length=150,
+        verbose_name='카드 ID'
+    )
+    is_active = models.BooleanField(
+        default=False,
+        verbose_name='활성화 여부'
+    )
+    timestamp = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        db_table = 'device'
