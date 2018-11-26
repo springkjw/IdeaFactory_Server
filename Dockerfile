@@ -43,12 +43,12 @@ COPY build/nginx.conf /etc/nginx/sites-available/default
 COPY build/supervisor.conf /etc/supervisor/conf.d/
 
 # 필요한 내용 복사 후 라이브러리 설치
-COPY requirements.txt manage.py db.sqlite3 ${PROJECT_SRC}/
+COPY requirements.txt manage.py ${PROJECT_SRC}/
 
 RUN cd ${PROJECT_SRC} && pip install -qq -r requirements.txt
 
 COPY config ${PROJECT_SRC}/config
 COPY apps ${PROJECT_SRC}/apps
 
-EXPOSE 8000
+EXPOSE 80
 CMD ["supervisord", "-n"]

@@ -8,14 +8,23 @@ services:
       - 1883:1883
     expose:
       - "1883"
+  postgres:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432"
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
   web:
     restart: always
-    build: ./web
+    build: .
     links:
       - mosquitto
-    depends_on:
-      - mosquitto
-    expose:
-      - "8000"
+      - postgres
+      - redis
     ports:
-      - 8000:80
+      - 9000:80
+
