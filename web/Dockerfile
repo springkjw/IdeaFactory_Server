@@ -50,5 +50,5 @@ RUN cd ${PROJECT_SRC} && pip install -qq -r requirements.txt
 COPY config ${PROJECT_SRC}/config
 COPY apps ${PROJECT_SRC}/apps
 
-EXPOSE 80
+EXPOSE 8000
 CMD ["supervisord", "-n"]
