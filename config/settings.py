@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'raven.contrib.django.raven_compat',
     'rest_framework',
     'apps.mqtt',
 ]
@@ -54,7 +55,7 @@ DATABASES = {
         'NAME': 'ideafactory',
         'USER': 'ideafactory',
         'PASSWORD': 'asdfghjkl',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
     }
 }
 
@@ -112,3 +113,53 @@ REST_FRAMEWORK = {
 
 BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+import raven
+
+RAVEN_CONFIG = {
+    'dsn': 'https://d7252f69fee94587b8d90a45a6c5cab7:38264047aeb34e458c49936fc86cf635@sentry.io/1323533',
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s  %(asctime)s  %(module)s '
+                      '%(process)d  %(thread)d  %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR', # To capture more than ERROR, change to WARNING, INFO, etc.
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'},
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}

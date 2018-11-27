@@ -10,7 +10,7 @@ services:
       - "1883"
   postgres:
     restart: always
-    image: postgres:latest
+    build: ./postgres
     ports:
       - "5432"
   redis:
@@ -27,4 +27,5 @@ services:
       - redis
     ports:
       - 9000:80
-
+    depends_on:
+      - postgres
