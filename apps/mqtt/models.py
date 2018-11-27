@@ -25,9 +25,15 @@ class Mqtt(models.Model):
 
 
 class Device(models.Model):
-    card_id = models.CharField(
+    device_id = models.CharField(
         max_length=150,
-        verbose_name='카드 ID'
+        verbose_name='장비 ID'
+    )
+    user_id = models.CharField(
+        max_length=150,
+        null=True,
+        blank=True,
+        verbose_name='사용자 ID',
     )
     is_active = models.BooleanField(
         default=False,
@@ -37,5 +43,9 @@ class Device(models.Model):
         auto_now=True
     )
 
+
     class Meta:
         db_table = 'device'
+
+    def __str__(self):
+        return self.device_id

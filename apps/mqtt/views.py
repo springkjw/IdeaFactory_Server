@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser
@@ -18,6 +19,39 @@ devices = {
 }
 
 api_ip = 'https://ideafactory.kaist.ac.kr/api/getReservationForTag'
+auth_user_result = {
+    "return": True,
+    "msg": "nonbooking eqipment",
+    "data":{
+        "res_id":None,
+        "res_ef_no":"IF025",
+        "res_ur_name":"홍길동",
+        "res_start_dt":None,
+        "res_end_dt":None
+    }
+}
+reserve_expire_user_result = {
+    "return": True,
+    "msg":"",
+    "data":{
+        "res_id":"22558",
+        "res_ef_no":"IF025",
+        "res_ur_name":"홍길동",
+        "res_start_dt":"2018-11-01 13:30:00",
+        "res_end_dt":"2018-11-01 16:00:00"
+    }
+}
+reserve_user_result = {
+    "return": True,
+    "msg":"",
+    "data":{
+        "res_id":"22558",
+        "res_ef_no":"IF025",
+        "res_ur_name":"홍길동",
+        "res_start_dt":"2018-11-28 06:00:00",
+        "res_end_dt":"2018-11-28 18:30:00"
+    }
+}
 
 
 class DeviceView(APIView):
@@ -25,65 +59,47 @@ class DeviceView(APIView):
 
     def post(self, request, *args, **kwargs):
         # try:
-        value = request.data.get('value')
+        user = request.data.get('value')
         device = request.data.get('dId')
         
-        student_id = value[14:22]
-        device_id = devices.get(device, None)
+        user_id = user[14:22]
+        device_id = devices.get(device, 'Undefined')
 
         d, _ = Device.objects.get_or_create(
-            card_id=device_id
+            device_id=device_id
         )
 
-        print(student_id, device_id, d.is_active)
-        if student_id is not None and student_id != '':
+        if user_id is not None and user_id != '':
             if not d.is_active:
-                d.is_active = True
-                d.save()
+                # 예약 사이트에 요청
+                res = requests.post(api_ip, data={
+                    'ef_no': device_id,
+                    'school_num': user_id,
+                })
+                # if res.status_code == 200:
+                if res.status_code == 404:
+                    # result = res.json()
+                    result = reserve_user_result
+                    
+                    if result.get('return'):
+                        data = result.get('data')
 
-                mqttc.publish(topics['DEVICE_STATUS'], "1")
+                        if data.get('res_start_dt') is None:
+                            d.is_active = True
+                            d.save()
+                            mqttc.publish(device, "1")
+                        else:
+                            start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
+                            end = datetime.strptime(data.get('res_end_dt'), '%Y-%m-%d %H:%M:%S')
+
+                            if datetime.now() > start and datetime.now() < end:
+                                d.is_active = True
+                                d.save()
+                                mqttc.publish(device, "1")
         else:
             if d.is_active:
                 d.is_active = False
                 d.save()
 
-                mqttc.publish(topics['DEVICE_STATUS'], "0")
-
-
-        # try:
-        #     if device_id is not None:
-        #         # 예약 사이트에 정보 확인
-        #         url = "%s/%s%s" % (
-        #             api_ip,
-        #             device_id,
-        #             student_id,
-        #         )
-
-        #         res = requests.post(api_ip, data={
-        #             'ef_no': device_id,
-        #             'school_num': student_id,
-        #         })
-
-        #         if res.status_code == 200:
-        #             result = res.json()
-                    
-        #             if result.get('return'):
-        #                 # MQTT 발행
-        #                 data = result.get('data')
-        #                 if data:
-        #                     res_ef_no = data.get('res_ef_no')
-        #                     res_end_dt = data.get('res_end_dt')
-
-        #                 mqttc.publish(topics['DEVICE_STATUS'], "1")
-        #             else:
-        #                 msg = result.get('msg')
-        #                 # 예약은 안했지만 가입한 유저인 경우 패스
-        #                 if msg == 'not exists reservation':
-        #                     mqttc.publish(topics['DEVICE_STATUS'], "1")
-        #         else:
-        #             mqttc.publish(topics['DEVICE_STATUS'], "0")
-        #     else:
-        #         mqttc.publish(topics['DEVICE_STATUS'], "0")
-        # except:
-        #     mqttc.publish(topics['DEVICE_STATUS'], "0")
+                mqttc.publish(device, "0")
         return Response()

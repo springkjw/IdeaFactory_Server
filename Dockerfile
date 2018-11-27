@@ -4,10 +4,12 @@ ENV PROJECT_ROOT=/home/ubuntu \
     PROJECT_SRC=src \
     PROJECT_UWSGI=uwsgi \
     PROJECT_ENV=production \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Seoul
 
 # 필수 라이브러리 설치
-RUN apt-get update && \
+RUN echo ${TZ} > /etc/timezone && \
+    apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
@@ -19,9 +21,14 @@ RUN ln -sfn /usr/bin/python3.6 /usr/bin/python3 && \
 
 RUN apt-get install -y nginx \
     supervisor \
-    locales && \
+    locales \
+    tzdata && \
     pip3 install --upgrade pip && \
-    pip install uwsgi
+    pip install uwsgi && \
+    rm /etc/localtime && \
+    ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get clean
 
 RUN locale-gen ko_KR.UTF-8
 ENV LANG ko_KR.UTF-8
@@ -50,5 +57,5 @@ RUN cd ${PROJECT_SRC} && pip install -qq -r requirements.txt
 COPY config ${PROJECT_SRC}/config
 COPY apps ${PROJECT_SRC}/apps
 
-EXPOSE 80
+EXPOSE 8000
 CMD ["supervisord", "-n"]
