@@ -1,4 +1,4 @@
-#!/Users/kwonjaewon/Project/OutSourcing/ideafactory/IdeaFactory_Server/venv/bin/python
+#!/Users/jaewon/Outsourcing/ideafactory/IdeaFactory_Server/venv/bin/python
 
 import sys
 import getopt

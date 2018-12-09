@@ -39,6 +39,10 @@ class Device(models.Model):
         default=False,
         verbose_name='활성화 여부'
     )
+    expired = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
     timestamp = models.DateTimeField(
         auto_now=True
     )
