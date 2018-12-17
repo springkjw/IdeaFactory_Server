@@ -33,8 +33,8 @@ reserve_user_result = {
         "res_id":"22558",
         "res_ef_no":"IF025",
         "res_ur_name":"홍길동",
-        "res_start_dt":"2018-12-06 12:00:00",
-        "res_end_dt":"2018-12-06 15:00:00"
+        "res_start_dt":"2018-12-12 10:00:00",
+        "res_end_dt":"2018-12-12 11:50:00"
     }
 }
 
@@ -46,6 +46,8 @@ class DeviceView(APIView):
         user = request.data.get('value')
         device = request.data.get('dId')
         isSuccess = False
+
+        print(device)
         
         device_id = DEVICES.get(device, 'Undefined')
         user_id = user[14:22]
@@ -57,16 +59,16 @@ class DeviceView(APIView):
             })
 
             if res.status_code == 200:
-                # result = res.json()
+                result = res.json()
 
-                # t = '2018-12-06 14:20:00'
+                # t = '2018-12-12 11:50:00'
                 # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
                 # if (tmp > datetime.now()):
                 #     result = reserve_user_result
                 # else:
                 #     result = reserve_expire_user_result
 
-                result = auth_user_result
+                # result = auth_user_result
 
                 if result.get('return'):
                     data = result.get('data')
