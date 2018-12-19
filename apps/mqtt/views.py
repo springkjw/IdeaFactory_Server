@@ -50,7 +50,7 @@ class DeviceView(APIView):
         
         device_id = DEVICES.get(device, 'Undefined')
         
-        print(device, user)
+        print(device)
 
         if user:
             user_id = user[14:22]
