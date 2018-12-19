@@ -71,7 +71,7 @@ class DeviceView(APIView):
                 # else:
                 #     result = reserve_expire_user_result
 
-                # result = auth_user_result
+                result = auth_user_result
 
                 print(result)
 
