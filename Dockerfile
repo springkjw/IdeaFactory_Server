@@ -57,5 +57,6 @@ RUN cd ${PROJECT_SRC} && pip install -qq -r requirements.txt
 COPY config ${PROJECT_SRC}/config
 COPY apps ${PROJECT_SRC}/apps
 
+VOLUME [ "db.sqlite3", "/home/ubuntu/src/db.sqlite3" ]
 EXPOSE 8000
 CMD ["supervisord", "-n"]
