@@ -73,6 +73,8 @@ class DeviceView(APIView):
                 if result.get('return'):
                     data = result.get('data')
 
+                    print(data)
+
                     if data.get('res_start_dt') is None:
                         # 라이센스가 있는 유저
                         isSuccess = True
