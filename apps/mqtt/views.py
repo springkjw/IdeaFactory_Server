@@ -52,7 +52,7 @@ class DeviceView(APIView):
         
         print(device)
 
-        if user:
+        if len(user) > 0:
             user_id = user[14:22]
             res = requests.post(api_ip, data={
                 'ef_no': device_id,
