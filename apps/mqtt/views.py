@@ -72,10 +72,10 @@ class DeviceView(APIView):
 
                 # result = auth_user_result
 
+                print(result)
+
                 if result.get('return'):
                     data = result.get('data')
-
-                    print(data)
 
                     if data.get('res_start_dt') is None:
                         # 라이센스가 있는 유저
