@@ -58,6 +58,8 @@ class DeviceView(APIView):
                 'school_num': user_id,
             })
 
+            print(res.status_code)
+
             if res.status_code == 200:
                 result = res.json()
 
