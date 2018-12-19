@@ -47,12 +47,13 @@ class DeviceView(APIView):
         device = request.data.get('dId')
         isSuccess = False
 
-        print(device)
         
         device_id = DEVICES.get(device, 'Undefined')
-        user_id = user[14:22]
+        
+        print(device, user)
 
-        if user_id:
+        if user:
+            user_id = user[14:22]
             res = requests.post(api_ip, data={
                 'ef_no': device_id,
                 'school_num': user_id,
