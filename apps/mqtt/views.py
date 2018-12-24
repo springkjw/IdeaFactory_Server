@@ -56,9 +56,6 @@ class DeviceView(APIView):
                 'school_num': user_id,
             })
 
-            print(res.status_code)
-            print(user_id)
-
             if res.status_code == 200:
                 result = res.json()
 
@@ -70,8 +67,6 @@ class DeviceView(APIView):
                 #     result = reserve_expire_user_result
 
                 # result = auth_user_result
-
-                print(result)
 
                 if result.get('return'):
                     data = result.get('data')
