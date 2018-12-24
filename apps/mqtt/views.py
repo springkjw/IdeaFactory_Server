@@ -68,6 +68,8 @@ class DeviceView(APIView):
 
                 # result = auth_user_result
 
+                print(result)
+
                 if result.get('return'):
                     data = result.get('data')
 
