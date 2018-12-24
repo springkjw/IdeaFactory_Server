@@ -8,7 +8,7 @@ import paho.mqtt.client as mqtt
 import requests
 from config.mqtt import client as mqttc
 from .models import Device
-from apps.device.devices import DEVICES, UNREGISTER
+from apps.device.devices import DEVICES
 
 
 api_ip = 'https://ideafactory.kaist.ac.kr/api/getReservationForTag'
@@ -49,10 +49,8 @@ class DeviceView(APIView):
         device = request.data.get('dId')
         isSuccess = False
         device_id = DEVICES.get(device, 'Undefined')
+        print(user)
 
-        # if device in UNREGISTER:
-        #     mqttc.publish("device", "{}1".format(device))
-        # else:
         if len(user) > 0:
             user_id = user[14:22]
             print(device_id)
