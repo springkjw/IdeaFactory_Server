@@ -50,9 +50,6 @@ class DeviceView(APIView):
         
         device_id = DEVICES.get(device, 'Undefined')
         
-        # print(device)
-        print(user)
-
         if len(user) > 0:
             user_id = user[14:22]
             res = requests.post(api_ip, data={
@@ -61,6 +58,7 @@ class DeviceView(APIView):
             })
 
             print(res.status_code)
+            print(user_id)
 
             if res.status_code == 200:
                 result = res.json()
@@ -72,9 +70,9 @@ class DeviceView(APIView):
                 # else:
                 #     result = reserve_expire_user_result
 
-                # result = auth_user_result
+                result = auth_user_result
 
-                print(result)
+                # print(result)
 
                 if result.get('return'):
                     data = result.get('data')
