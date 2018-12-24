@@ -63,16 +63,10 @@ class DeviceView(APIView):
                 'school_num': user_id,
             })
 
-            print(res.status_code)
-
             if res.status_code == 200:
-                print(res.text)
-                try:
-                    result = res.json()
-                except UnicodeEncodeError:
-                    result = json.dump(res.json()).encode("utf-8")
+                result = res.json()
                 
-                print(result)
+                print(result.get('data'))
 
                 # t = '2018-12-12 11:50:00'
                 # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
