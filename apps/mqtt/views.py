@@ -49,7 +49,6 @@ class DeviceView(APIView):
         device = request.data.get('dId')
         isSuccess = False
         device_id = DEVICES.get(device, 'Undefined')
-        print(user)
 
         if len(user) > 0:
             user_id = user[14:22]
