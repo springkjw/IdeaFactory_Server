@@ -75,8 +75,6 @@ class DeviceView(APIView):
 
                 # result = auth_user_result
 
-                print(result)
-
                 if result.get('return'):
                     data = result.get('data')
 
@@ -85,6 +83,8 @@ class DeviceView(APIView):
                         isSuccess = True
                     else:
                         # 예약한 유저
+                        print('reserve')
+
                         start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
                         end = datetime.strptime(data.get('res_end_dt'), '%Y-%m-%d %H:%M:%S')
 
