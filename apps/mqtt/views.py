@@ -66,8 +66,6 @@ class DeviceView(APIView):
             if res.status_code == 200:
                 result = res.json()
 
-                print(res.text)
-
                 # t = '2018-12-12 11:50:00'
                 # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
                 # if (tmp > datetime.now()):
@@ -77,7 +75,7 @@ class DeviceView(APIView):
 
                 # result = auth_user_result
 
-                # print(result)
+                print(result)
 
                 if result.get('return'):
                     data = result.get('data')
