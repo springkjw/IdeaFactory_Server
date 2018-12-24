@@ -52,6 +52,8 @@ class DeviceView(APIView):
         # if device in UNREGISTER:
         #     mqttc.publish("device", "{}1".format(device))
         # else:
+        print(len(user))
+
         if len(user) > 0:
             user_id = user[14:22]
             res = requests.post(api_ip, data={
