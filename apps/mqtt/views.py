@@ -50,7 +50,7 @@ class DeviceView(APIView):
         device_id = DEVICES.get(device, 'Undefined')
 
         if device in UNREGISTER:
-            mqttc.publish("device", "{}1".format(device, message))
+            mqttc.publish("device", "{}1".format(device))
         else:
             if len(user) > 0:
                 user_id = user[14:22]
