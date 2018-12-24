@@ -49,57 +49,57 @@ class DeviceView(APIView):
         isSuccess = False
         device_id = DEVICES.get(device, 'Undefined')
 
-        if device in UNREGISTER:
-            mqttc.publish("device", "{}1".format(device))
+        # if device in UNREGISTER:
+        #     mqttc.publish("device", "{}1".format(device))
+        # else:
+        if len(user) > 0:
+            user_id = user[14:22]
+            res = requests.post(api_ip, data={
+                'ef_no': device_id,
+                'school_num': user_id,
+            })
+
+            if res.status_code == 200:
+                result = res.json()
+
+                # t = '2018-12-12 11:50:00'
+                # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
+                # if (tmp > datetime.now()):
+                #     result = reserve_user_result
+                # else:
+                #     result = reserve_expire_user_result
+
+                result = auth_user_result
+
+                # print(result)
+
+                if result.get('return'):
+                    data = result.get('data')
+
+                    if data.get('res_start_dt') is None:
+                        # 라이센스가 있는 유저
+                        isSuccess = True
+                    else:
+                        # 예약한 유저
+                        start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
+                        end = datetime.strptime(data.get('res_end_dt'), '%Y-%m-%d %H:%M:%S')
+
+                        if datetime.now() > start and datetime.now() < end:
+                            d, _ = Device.objects.get_or_create(
+                                device_id=device_id
+                            )
+                            d.user_id = user_id
+                            d.is_active = True
+                            d.expired = end
+                            d.save()
+
+                            isSuccess= True
+            
+        if isSuccess:
+            message = "1"
         else:
-            if len(user) > 0:
-                user_id = user[14:22]
-                res = requests.post(api_ip, data={
-                    'ef_no': device_id,
-                    'school_num': user_id,
-                })
-
-                if res.status_code == 200:
-                    result = res.json()
-
-                    # t = '2018-12-12 11:50:00'
-                    # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
-                    # if (tmp > datetime.now()):
-                    #     result = reserve_user_result
-                    # else:
-                    #     result = reserve_expire_user_result
-
-                    result = auth_user_result
-
-                    # print(result)
-
-                    if result.get('return'):
-                        data = result.get('data')
-
-                        if data.get('res_start_dt') is None:
-                            # 라이센스가 있는 유저
-                            isSuccess = True
-                        else:
-                            # 예약한 유저
-                            start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
-                            end = datetime.strptime(data.get('res_end_dt'), '%Y-%m-%d %H:%M:%S')
-
-                            if datetime.now() > start and datetime.now() < end:
-                                d, _ = Device.objects.get_or_create(
-                                    device_id=device_id
-                                )
-                                d.user_id = user_id
-                                d.is_active = True
-                                d.expired = end
-                                d.save()
-
-                                isSuccess= True
-                
-            if isSuccess:
-                message = "1"
-            else:
-                message = "0"
-                
-            mqttc.publish("device", "{}{}".format(device, message))
+            message = "0"
+            
+        mqttc.publish("device", "{}{}".format(device, message))
  
         return Response()
