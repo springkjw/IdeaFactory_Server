@@ -66,6 +66,8 @@ class DeviceView(APIView):
             if res.status_code == 200:
                 result = res.json()
 
+                print(result)
+
                 # t = '2018-12-12 11:50:00'
                 # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
                 # if (tmp > datetime.now()):
