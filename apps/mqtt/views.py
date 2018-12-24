@@ -66,6 +66,7 @@ class DeviceView(APIView):
             print(res.status_code)
 
             if res.status_code == 200:
+                print(res.text)
                 try:
                     result = res.json()
                 except UnicodeEncodeError:
