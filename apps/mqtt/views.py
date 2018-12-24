@@ -47,7 +47,6 @@ class DeviceView(APIView):
         device = request.data.get('dId')
         isSuccess = False
 
-        
         device_id = DEVICES.get(device, 'Undefined')
         
         if len(user) > 0:
@@ -70,9 +69,9 @@ class DeviceView(APIView):
                 # else:
                 #     result = reserve_expire_user_result
 
-                result = auth_user_result
+                # result = auth_user_result
 
-                # print(result)
+                print(result)
 
                 if result.get('return'):
                     data = result.get('data')
