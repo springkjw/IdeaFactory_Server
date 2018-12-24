@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -62,8 +63,11 @@ class DeviceView(APIView):
             print(res.status_code)
 
             if res.status_code == 200:
-                result = res.json()
-
+                try:
+                    result = res.json()
+                except UnicodeEncodeError:
+                    result = json.dump(res.json()).encode("utf-8")
+                
                 print(result)
 
                 # t = '2018-12-12 11:50:00'
