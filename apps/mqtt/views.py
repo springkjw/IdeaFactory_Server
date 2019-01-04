@@ -40,6 +40,10 @@ reserve_user_result = {
     }
 }
 
+MASTER_CARDS = [
+    '29990008',
+]
+
 
 class DeviceView(APIView):
     parser_classes = [FormParser]
@@ -54,13 +58,16 @@ class DeviceView(APIView):
         if len(user) > 0:
             user_id = user[14:22]
 
-            res = requests.post(api_ip, data={
-                'ef_no': device_id,
-                'school_num': user_id,
-            })
+            if user_id in MASTER_CARDS:
+                isSuccess = True
+            else:
+                res = requests.post(api_ip, data={
+                    'ef_no': device_id,
+                    'school_num': user_id,
+                })
 
-            if res.status_code == 200:
-                # result = res.json()
+                if res.status_code == 200:
+                result = res.json()
 
                 # t = '2018-12-12 11:50:00'
                 # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
@@ -69,7 +76,7 @@ class DeviceView(APIView):
                 # else:
                 #     result = reserve_expire_user_result
 
-                result = auth_user_result
+                # result = auth_user_result
 
                 if result.get('return'):
                     data = result.get('data')
