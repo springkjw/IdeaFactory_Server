@@ -79,28 +79,28 @@ class DeviceView(APIView):
                     # result = auth_user_result
 
                     if result.get('return'):
-                    data = result.get('data')
+                        data = result.get('data')
 
-                    if data.get('res_start_dt') is None:
-                        # 라이센스가 있는 유저
-                        isSuccess = True
-                    else:
-                        # 예약한 유저
-                        print('reserve')
+                        if data.get('res_start_dt') is None:
+                            # 라이센스가 있는 유저
+                            isSuccess = True
+                        else:
+                            # 예약한 유저
+                            print('reserve')
 
-                        start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
-                        end = datetime.strptime(data.get('res_end_dt'), '%Y-%m-%d %H:%M:%S')
+                            start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
+                            end = datetime.strptime(data.get('res_end_dt'), '%Y-%m-%d %H:%M:%S')
 
-                        if datetime.now() > start and datetime.now() < end:
-                            d, _ = Device.objects.get_or_create(
-                                device_id=device_id
-                            )
-                            d.user_id = user_id
-                            d.is_active = True
-                            d.expired = end
-                            d.save()
+                            if datetime.now() > start and datetime.now() < end:
+                                d, _ = Device.objects.get_or_create(
+                                    device_id=device_id
+                                )
+                                d.user_id = user_id
+                                d.is_active = True
+                                d.expired = end
+                                d.save()
 
-                            isSuccess= True
+                                isSuccess= True
             
         else:
             print("resend")
