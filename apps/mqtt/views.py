@@ -107,7 +107,7 @@ class DeviceView(APIView):
             print('resend')
             message = "2"
         elif isSuccess:
-            prinnt('on')
+            print('on')
             message = "1"
         else:
             print('off')
