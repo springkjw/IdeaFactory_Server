@@ -51,7 +51,6 @@ class DeviceView(APIView):
         device_id = DEVICES.get(device, 'Undefined')
 
         print(device, device_id)
-        print(user.encode('utf-8').decode('utf-8'))
         if len(user) > 0:
             user_id = user[14:22]
 
@@ -96,6 +95,10 @@ class DeviceView(APIView):
 
                             isSuccess= True
             
+        else:
+            print("resend")
+            message = "2"
+
         if isSuccess:
             message = "1"
         else:
