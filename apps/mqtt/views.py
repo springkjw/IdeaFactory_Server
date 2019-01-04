@@ -96,6 +96,7 @@ class DeviceView(APIView):
                             isSuccess= True
             
         else:
+            print(user[0], user[1], user[2], user[3])
             print("resend")
             message = "2"
 
