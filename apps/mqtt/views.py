@@ -102,13 +102,15 @@ class DeviceView(APIView):
 
                                 isSuccess= True
             
-        else:
-            print("resend")
-            message = "2"
 
-        if isSuccess:
+        if len(user) <= 0:
+            print('resend')
+            message = "2"
+        elif isSuccess:
+            prinnt('on')
             message = "1"
         else:
+            print('off')
             message = "0"
             
         mqttc.publish("device", "{}{}".format(device, message))
