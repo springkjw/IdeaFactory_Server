@@ -85,5 +85,5 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.connect("mosquitto", 1883, 60)
-# client.connect("localhost", 1883, 60)
+# client.connect("mosquitto", 1883, 60)
+client.connect("localhost", 1883, 60)
