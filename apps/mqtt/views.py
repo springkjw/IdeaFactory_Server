@@ -50,7 +50,7 @@ class DeviceView(APIView):
         isSuccess = False
         device_id = DEVICES.get(device, 'Undefined')
 
-        print(device_id)
+        print(device, device_id)
         if len(user) > 0:
             user_id = user[14:22]
             print(user_id)
