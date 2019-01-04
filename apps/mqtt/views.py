@@ -50,9 +50,9 @@ class DeviceView(APIView):
         isSuccess = False
         device_id = DEVICES.get(device, 'Undefined')
 
+        print(device_id)
         if len(user) > 0:
             user_id = user[14:22]
-            print(device_id)
             print(user_id)
 
             res = requests.post(api_ip, data={
@@ -61,7 +61,7 @@ class DeviceView(APIView):
             })
 
             if res.status_code == 200:
-                result = res.json()
+                # result = res.json()
 
                 # t = '2018-12-12 11:50:00'
                 # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
@@ -70,7 +70,7 @@ class DeviceView(APIView):
                 # else:
                 #     result = reserve_expire_user_result
 
-                # result = auth_user_result
+                result = auth_user_result
 
                 if result.get('return'):
                     data = result.get('data')
