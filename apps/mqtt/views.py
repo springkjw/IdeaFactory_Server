@@ -67,18 +67,18 @@ class DeviceView(APIView):
                 })
 
                 if res.status_code == 200:
-                result = res.json()
+                    result = res.json()
 
-                # t = '2018-12-12 11:50:00'
-                # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
-                # if (tmp > datetime.now()):
-                #     result = reserve_user_result
-                # else:
-                #     result = reserve_expire_user_result
+                    # t = '2018-12-12 11:50:00'
+                    # tmp = datetime.strptime(t, '%Y-%m-%d %H:%M:%S')
+                    # if (tmp > datetime.now()):
+                    #     result = reserve_user_result
+                    # else:
+                    #     result = reserve_expire_user_result
 
-                # result = auth_user_result
+                    # result = auth_user_result
 
-                if result.get('return'):
+                    if result.get('return'):
                     data = result.get('data')
 
                     if data.get('res_start_dt') is None:
