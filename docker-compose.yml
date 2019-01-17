@@ -23,11 +23,11 @@ services:
   #   expose:
   #     - "6374"
   web:
-    restart: always
+    restart: always:
     build: .
     ports:
       - 8000:8000
-    volume:
+    volumes:
       - ./db.sqlite3:/home/ubuntu:src/db.sqlite3
     depends_on:
       - mosquitto
