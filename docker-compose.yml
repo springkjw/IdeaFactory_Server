@@ -23,7 +23,7 @@ services:
   #   expose:
   #     - "6374"
   web:
-    restart: always:
+    restart: always
     build: .
     ports:
       - 8000:8000
