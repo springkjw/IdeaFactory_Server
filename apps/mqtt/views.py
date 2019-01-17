@@ -79,13 +79,14 @@ class DeviceView(APIView):
                     # result = auth_user_result
 
                     if result.get('return'):
+                        # 라이센스 있는 유저
                         data = result.get('data')
 
                         if data.get('res_start_dt') is None:
-                            # 라이센스가 있는 유저
+                            # 비예약장비
                             isSuccess = True
                         else:
-                            # 예약한 유저
+                            # 예약한유저
                             print('reserve')
 
                             start = datetime.strptime(data.get('res_start_dt'), '%Y-%m-%d %H:%M:%S')
