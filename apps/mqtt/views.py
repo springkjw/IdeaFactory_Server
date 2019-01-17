@@ -114,6 +114,7 @@ class DeviceView(APIView):
             print('off')
             message = "0"
             
+        print("{}{}".format(device, message))
         mqttc.publish("device", "{}{}".format(device, message))
  
         return Response()
