@@ -27,5 +27,7 @@ services:
     build: .
     ports:
       - 8000:8000
+    volume:
+      - ./db.sqlite3:/home/ubuntu:src/db.sqlite3
     depends_on:
       - mosquitto
